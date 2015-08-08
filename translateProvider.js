@@ -1,5 +1,4 @@
-/// <reference path="../../angular.js" />
-window.app.provider('translate', function () {
+angular.module("YourModuleName").provider('translate', function () {
     var currentCulture;
     var currentCultureCode ;
     var cultures = {
