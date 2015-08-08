@@ -58,7 +58,7 @@ angular.module("YourModuleName").provider('translate', function () {
                 }
             }
             else{
-                throw new Error('"valueObj" is not a object').stack;
+                throw new Error('"valueObj" is not an object').stack;
             }
         }
 
