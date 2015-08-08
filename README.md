@@ -27,7 +27,7 @@ function exampleController($scope, $translate) {
 
 exampleController.$inject = ['$scope', 'translate'];
 
-window.app.controller("exampleController", exampleController);
+angular.module("MyModule).controller("exampleController", exampleController);
 ```
 Description of "loadCulture" function
 --------------
@@ -50,7 +50,7 @@ function exampleController($scope, $translate) {
 
 exampleController.$inject = ['$scope', 'translate'];
 
-window.app.controller("exampleController", exampleController);
+angular.module("MyModule).controller("exampleController", exampleController);
 ```
 
 Description of "get" function
@@ -73,5 +73,5 @@ function exampleController($scope, $translate) {
 
 exampleController.$inject = ['$scope', 'translate'];
 
-window.app.controller("exampleController", exampleController);
+angular.module("MyModule).controller("exampleController", exampleController);
 ```
