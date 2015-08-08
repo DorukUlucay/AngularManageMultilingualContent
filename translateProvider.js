@@ -74,7 +74,7 @@ window.app.provider('translate', function () {
                 cultureObj[key] = valueObj[key];
             }
             else {
-                if (typeof cultureObj[key] !== "undefined" || cultureObj[key] !== undefined) {
+                if (cultureObj[key] !== undefined) {
                     throw new Error('"' + key + '" is already defined').stack;
                 }
             }
