@@ -1,4 +1,4 @@
-angular.module("YourModuleName").provider('translate', function () {
+angular.module('MyModule').provider('translate', function () {
     var currentCulture;
     var currentCultureCode ;
     var cultures = {
@@ -21,17 +21,23 @@ angular.module("YourModuleName").provider('translate', function () {
     };
 
     var getCultureObject = function (cultureName) {
-        if (cultureName === undefined) {
-            throw new Error('"cultureName" is undefined').stack;
+        if (!angular.isDefined(cultureName) || cultureName === null) {
+            throw new Error('"cultureName" is undefined or null').stack;
         }
+        else {
+            if (cultureName.constructor.name !== "String") {
+                throw new Error('"cultureName" is not a string').stack;
+            } else {
+                var matched = cultures[cultureName];
 
-        var matched = cultures[cultureName];
-
-        if (matched === undefined) {
-            throw new Error('No matched culture name found').stack;
+                if (!angular.isDefined(matched)) {
+                    throw new Error('No matched culture name found').stack;
+                }
+                else {
+                    return matched;
+                }
+            }
         }
-
-        return matched;
     };
 
     var loadCulture = function (cultureName) {
@@ -44,58 +50,63 @@ angular.module("YourModuleName").provider('translate', function () {
 
         var cultureObj = getCultureObject(cultureName);
 
-        if (valueObj === undefined) {
-            throw new Error('"valueObj" is undefined').stack;
+        if (!angular.isDefined(valueObj) || valueObj === null) {
+            throw new Error('"valueObj" is undefined or null').stack;
         }
-
-        if (valueObj.constructor.name !== "Object") {
-            if (valueObj.constructor.name === "String") {
-                try{
-                    valueObj = JSON.parse(valueObj);
+        else {
+            if (valueObj.constructor.name !== "Object") {
+                if (valueObj.constructor.name === "String") {
+                    try {
+                        valueObj = JSON.parse(valueObj);
+                    }
+                    catch (e) {
+                        throw new Error('"valueObj" is not a JSON string').stack;
+                    }
                 }
-                catch (e) {
-                    throw new Error('"valueObj" could not be parsed').stack;
-                }
-            }
-            else{
-                throw new Error('"valueObj" is not a object').stack;
-            }
-        }
-
-        if (overwrite === undefined || typeof overwrite !== "boolean") {
-            overwrite = true;
-        }
-
-        var valueObjKeys = Object.keys(valueObj);
-
-        Array.prototype.forEach.call(valueObjKeys, function (key) {
-            if (overwrite) {
-                cultureObj[key] = valueObj[key];
-            }
-            else {
-                if (cultureObj[key] !== undefined) {
-                    throw new Error('"' + key + '" is already defined').stack;
+                else {
+                    throw new Error('"valueObj" is not an object or JSON sring').stack;
                 }
             }
-        });
+
+            if (!angular.isDefined(overwrite) || typeof overwrite !== "boolean") {
+                overwrite = true;
+            }
+
+            var valueObjKeys = Object.keys(valueObj);
+
+            Array.prototype.forEach.call(valueObjKeys, function (key) {
+                if (overwrite || !angular.isDefined(cultureObj[key])) {
+                    var value = valueObj[key];
+
+                    if (value.constructor.name === "String") {
+                        cultureObj[key] = value;
+                    } else {
+                        throw new Error('"' + key + '" value is not a string').stack;
+                    }
+                }
+            });
+        }
     };
 
     var get = function (key) {
-        if (key === undefined) {
-            throw new Error('"key" is undefined').stack;
+        if (!angular.isDefined(key) || key === null) {
+            throw new Error('"key" is undefined or null').stack;
         }
+        else {
+            if (!angular.isDefined(currentCulture)) {
+                throw new Error('Any culture is not loaded. Use "loadCulture" method to load culture').stack;
+            }
+            else {
+                var matched = currentCulture[key];
 
-        if (currentCulture === undefined) {
-            throw new Error('Any culture is not loaded. Use "loadCulture" method to load culture').stack;
+                if (!angular.isDefined(matched)) {
+                    return '[' + currentCultureCode + ':' + key + ']';
+                }
+                else {
+                    return matched;
+                }
+            }
         }
-
-        var matched = currentCulture[key];
-
-        if (matched === undefined) {
-            return '[' + currentCultureCode + ':' + key + ']';
-        }
-
-        return matched;
     }
 
     return {
