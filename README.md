@@ -75,3 +75,25 @@ exampleController.$inject = ['$scope', 'translate'];
 
 angular.module("MyModule).controller("exampleController", exampleController);
 ```
+
+Description of "translate" filter
+--------------
+*Gets a value from default culture using a key*
+
+1. parameter : required
+ - 'DIALOGS_OK'
+ - ...
+ 
+  **Example Usage**
+```javascript
+function exampleController($scope, $translate) {
+};
+
+exampleController.$inject = ['$scope', 'translate'];
+
+angular.module("MyModule).controller("exampleController", exampleController);
+
+<div ng-controller="exampleController">
+   {{'DIALOGS_OK'|translate}}
+</div>
+```
