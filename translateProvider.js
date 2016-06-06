@@ -1,4 +1,4 @@
-angular.module('MyModule').provider('translate', function () {
+window.app.provider('translate', function () {
     var currentCulture;
     var currentCultureCode ;
     var cultures = {
